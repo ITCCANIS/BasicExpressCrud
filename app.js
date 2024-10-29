@@ -1,12 +1,24 @@
+const morgan = require("morgan");
 const Joi = require("joi");
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
+const { logging, authenticating } = require("./middleware/logger.js");
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+if (app.get("env") === "development") {
+  app.use(morgan("dev"));
+  console.log("Morgan Enabled");
+}
+
+app.use(logging);
+app.use(authenticating);
 
 students = [
-  { id: 1, name: "John" },
+  { id: 1, name: "Anis" },
   { id: 2, name: "Doe" },
   { id: 3, name: "Smith" },
 ];
